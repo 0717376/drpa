@@ -27,7 +27,7 @@
     <script>
         $(document).ready(function() {
           function showSuggestions(data) {
-            $("#suggestions").empty().show();
+            $("#suggestions").empty().fadeIn(300);
             $.each(data, function(index, item) {
               let suggestion = $('<a href="#" class="list-group-item list-group-item-action"></a>').text(item.name).data("item", item);
               $("#suggestions").append(suggestion);
@@ -35,7 +35,9 @@
           }
     
           function hideSuggestions() {
-            $("#suggestions").empty().hide();
+            $("#suggestions").fadeOut(300, function() {
+              $(this).empty();
+            });
           }
     
           $("#search").on("input", function() {
@@ -57,56 +59,55 @@
             let item = $(this).data("item");
             $("#search").val(item.name);
             hideSuggestions();
-            $("#results").show();
+            $("#results").fadeIn(300);
             $("#details").empty();
             
             let contractInfoHtml = "";
-        $.each(item.contractInfo, function(index, contract) {
-          contractInfoHtml += `
-            <div class="contract">
-              <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#contract-${index}">
-                Контракт ${contract.leasingContractName}
-              </button>
-              <div class="collapse" id="contract-${index}">
-                <div class="card card-body">
-                  <p>ОДЗ: ${contract.odz}</p>
-                  <p>Статус контракта: ${contract.contractState}</p>
-                  <p>Срок задержки: ${contract.delayTerm}</p>
-                  <p>Общая задержка платежа: ${contract.wholePaymentDelay}</p>
-                  <p>Название договора лизинга: ${contract.leasingContractName}</p>
-                  <p>Нумерация ID договора: ${contract.leasingContractNumberingId}</p>
-                  <p>Сумма задержки платежа с НДС в валюте контракта: ${contract.paymentDelaySumNdsInContractCurrency}</p>
-                  <p>Остаток задолженности по контракту: ${contract.indebtednessRemainsByContract}</p>
-                  <p>Логин эксперта по мониторингу: ${contract.monitoringExpertLogin}</p>
-                  <p>Имя эксперта по мониторингу: ${contract.monitoringExpertName}</p>
-                  <p>Срок задержки возврата ПТС: ${contract.ptsReturnDelayTerm}</p>
-                </div>
-          `;
+            $.each(item.contractInfo, function(index, contract) {
+            contractInfoHtml += `
+                <div class="contract">
+                <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#contract-${index}">
+                    Контракт ${contract.leasingContractName}
+                </button>
+                <div class="collapse" id="contract-${index}">
+                    <div class="card card-body">
+                    <p>ОДЗ: ${contract.odz}</p>
+                    <p>Статус контракта: ${contract.contractState}</p>
+                    <p>Срок задержки: ${contract.delayTerm}</p>
+                    <p>Общая задержка платежа: ${contract.wholePaymentDelay}</p>
+                    <p>Название договора лизинга: ${contract.leasingContractName}</p>
+                    <p>Нумерация ID договора: ${contract.leasingContractNumberingId}</p>
+                    <p>Сумма задержки платежа с НДС в валюте контракта: ${contract.paymentDelaySumNdsInContractCurrency}</p>
+                    <p>Остаток задолженности по контракту: ${contract.indebtednessRemainsByContract}</p>
+                    <p>Логин эксперта по мониторингу: ${contract.monitoringExpertLogin}</p>
+                    <p>Имя эксперта по мониторингу: ${contract.monitoringExpertName}</p>
+                    <p>Срок задержки возврата ПТС: ${contract.ptsReturnDelayTerm}</p>
+                    </div>
+                    </div>
+                    </div>
+                    `;
+                    });
+                    let details = `
+      <p>ID: ${item.id}</p>
+      <p>Название: ${item.name}</p>
+      <p>ИНН: ${item.inn}</p>
+      <p>Статус ЕГРЮЛ: ${item.egrulStatus}</p>
+      <p>ВИП: ${item.vip}</p>
+      <p>Нерезидент: ${item.noResident}</p>
+      <p>ID филиала: ${item.branchId}</p>
+      <p>ОНЧИ: ${item.onchi}</p>
+      <p>ОДЗ: ${item.odz}</p>
+      ${contractInfoHtml}
+    `;
+
+    $("#details").html(details);
+  });
+
+  $("#back").on("click", function() {
+            $("#results").fadeOut(300);
+            $("#search").val("");
+          });
         });
-
-        let details = `
-          <p>ID: ${item.id}</p>
-          <p>Название: ${item.name}</p>
-          <p>ИНН: ${item.inn}</p>
-          <p>Статус ЕГРЮЛ: ${item.egrulStatus}</p>
-          <p>ВИП: ${item.vip}</p>
-          <p>Нерезидент: ${item.noResident}</p>
-          <p>ID филиала: ${item.branchId}</p>
-          <p>ОНЧИ: ${item.onchi}</p>
-          <p>ОДЗ: ${item.odz}</p>
-          ${contractInfoHtml}
-        `;
-
-        $("#details").html(details);
-      });
-
-      $("#back").on("click", function() {
-        $("#results").hide();
-        $("#search").val("");
-      });
-    });
-  </script>
-      
+    </script>
   </body>
 </html>
-
