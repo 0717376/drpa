@@ -45,10 +45,11 @@
         <div class="row mt-5" id="statistics">
             <div class="col">
                 <div class="statistics-container">
-                    <h4>Статистика</h4>
+                    <h4>Статистика</h4><br>
                     <p>Количество компаний на просрочке: <span id="unique-inn-count"></span></p>
                     <p>Количество договоров на просрочке: <span id="contract-count"></span></p>
-                    <p>Сумма всех просроченных платежей: <span id="total-delay-sum"></span></p>
+                    <p>Пророченных платежей: <span id="total-delay-sum" data-value=""></span></p>
+
                 </div>
             </div>
         </div>
@@ -71,7 +72,8 @@
         console.log(data);
         $("#unique-inn-count").text(data.unique_inn_count);
         $("#contract-count").text(data.contract_count);
-        $("#total-delay-sum").text(data.total_delay_sum);
+        $("#total-delay-sum").text(parseFloat(data.total_delay_sum).toLocaleString('ru-RU', { style: 'currency', currency: 'RUB' })).data("value", data.total_delay_sum);
+
     });
 }
 
@@ -127,17 +129,17 @@
                     contractInfoHtml += `
                 <div class="contract">
                 <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#contract-${index}">
-                    Контракт ${contract.leasingContractName}
+                    ДФЛ ${contract.leasingContractName}
                 </button>
                 <div class="collapse" id="contract-${index}">
                     <div class="card card-body">
-                    <p>ОДЗ: ${contract.odz}</p>
+                    <p>ОДЗ: ${contract.odz ? parseFloat(contract.odz).toLocaleString('ru-RU', { style: 'currency', currency: 'RUB' }) : "0,00 ₽"}</p>
                     <p>Статус контракта: ${contract.contractState}</p>
-                    <p>Срок просрочки: ${contract.delayTerm}</p>
+                    <p>Срок просрочки: ${contract.delayTerm} дней</p>
                     <p>Просрочка целого платежа: ${contract.wholePaymentDelay}</p>
                     <p>ID договора: ${contract.leasingContractNumberingId}</p>
-                    <p>Сумма просрочки: ${contract.paymentDelaySumNdsInContractCurrency}</p>
-                    <p>Остаток задолженности по контракту: ${contract.indebtednessRemainsByContract}</p>
+                    <p>Сумма просрочки: ${parseFloat(contract.paymentDelaySumNdsInContractCurrency).toLocaleString('ru-RU', { style: 'currency', currency: 'RUB' })}</p>
+                    <p>Остаток задолженности по договору: ${parseFloat(contract.indebtednessRemainsByContract).toLocaleString('ru-RU', { style: 'currency', currency: 'RUB' })}</p>
                     <p>Имя эксперта: ${contract.monitoringExpertName}</p>
                     <p>Срок задержки возврата ПТС: ${contract.ptsReturnDelayTerm}</p>
                     </div>
@@ -152,11 +154,11 @@
                     <p>ID: ${item.id}</p>
                     <p>Название: ${item.name}</p>
                     <p>ИНН: ${item.inn}</p>
-                    <p>Статус ИГРЮЛ: ${item.egrulStatus}</p>
-                    <p>ВИП: ${item.vip}</p>
-                    <p>Нерезидент: ${item.noResident}</p>
-                    <p>ОНЧИ: ${item.onchi}</p>
-                    <p>ОДЗ: ${item.odz}</p>
+                    <p>Статус ЕГРЮЛ: ${item.egrulStatus}</p>
+                    <p>ВИП: ${item.vip ? "да" : "нет"}</p>
+                    <p>Нерезидент: ${item.noResident ? "да" : "нет"}</p>
+                    <p>ОНЧИ: ${parseFloat(item.onchi).toLocaleString('ru-RU', { style: 'currency', currency: 'RUB' })}</p>
+                    <p>ОДЗ: ${parseFloat(item.odz).toLocaleString('ru-RU', { style: 'currency', currency: 'RUB' })}</p>
                     </div>
                     ${contractInfoHtml}
                     `;
