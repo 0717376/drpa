@@ -137,7 +137,6 @@
                     <p>Статус контракта: ${contract.contractState}</p>
                     <p>Срок просрочки: ${contract.delayTerm} дней</p>
                     <p>Просрочка целого платежа: ${contract.wholePaymentDelay}</p>
-                    <p>ID договора: ${contract.leasingContractNumberingId}</p>
                     <p>Сумма просрочки: ${parseFloat(contract.paymentDelaySumNdsInContractCurrency).toLocaleString('ru-RU', { style: 'currency', currency: 'RUB' })}</p>
                     <p>Остаток задолженности по договору: ${parseFloat(contract.indebtednessRemainsByContract).toLocaleString('ru-RU', { style: 'currency', currency: 'RUB' })}</p>
                     <p>Имя эксперта: ${contract.monitoringExpertName}</p>
